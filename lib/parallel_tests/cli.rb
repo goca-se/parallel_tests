@@ -45,6 +45,7 @@ module ParallelTests
             Parallel.map(items, :in_threads => num_processes) do |item|
               result = yield(item)
               reprint_output(result, lock.path) if options[:serialize_stdout]
+              ParallelTests.stop_all_processes if result[:exit_status] != 0
               result
             end
           end
